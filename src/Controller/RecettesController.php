@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\Commentaire;
-
 use App\Form\CommentaireType;
 use App\Repository\CategorieRepository;
 use App\Repository\CommentaireRepository;
@@ -76,9 +75,7 @@ class RecettesController extends AbstractController
 
     
     #[Route('/recettes/price/{id}', name: 'app_recettes_price')]
-
     public function price(CategorieRepository $cr,CommentaireRepository $cor, $id, IngredientRepository $ing, SaisonRepository $sr, BudgetRepository $br, RecetteRepository $rr): Response
-
     { 
         $saison = $sr->findAll();
         $budget = $br->findAll();
@@ -86,7 +83,6 @@ class RecettesController extends AbstractController
         $ingredient = $ing->findAll();
         $categorie = $cr->findAll();
         $budgetName = $budgetId-> getNom();
-
         $recettes = $rr->findAll();
         $targetRecette = $budgetId->getRecettes();
 
@@ -103,30 +99,22 @@ class RecettesController extends AbstractController
             $averageNotes[$recette->getId()] = $count > 0 ? $totalNotes / $count : null;
         }
 
-
         return $this->render('recettes/price.html.twig', [
             'categorie' => $categorie,
             'saison' => $saison,
             'budget' => $budget,
             'ingredient' => $ingredient,
-
             'recette' => $recettes,
-
             'budgetName' => $budgetName,
             'budgetId' => $budgetId,
 
             'targetRecette' => $targetRecette,
-
             'averageNotes' => $averageNotes,
-
         ]);
     }
 
     #[Route('/recettes/ingredient/{id}', name: 'app_recettes_ingredient')]
-
-
     public function ingredient(CategorieRepository $cr,$id,CommentaireRepository $cor, IngredientRepository $ing, SaisonRepository $sr, BudgetRepository $br, RecetteRepository $rr): Response
-
     { 
         $saison = $sr->findAll();
         $budget = $br->findAll();
@@ -136,7 +124,6 @@ class RecettesController extends AbstractController
         $ingredientName = $ingredientId-> getNom();
         $recette = $rr->findAll();
         $targetRecette = $ingredientId->getRecettes();
-
 
         foreach ($recette as $recette) {
             $commentaires = $cor->findBy(['recette' => $recette]);
@@ -158,11 +145,8 @@ class RecettesController extends AbstractController
             'recette' => $recette,
             'ingredientName' => $ingredientName,
             'ingredientId' => $ingredientId,
-
-
             'targetRecette' => $targetRecette,
             'averageNotes' => $averageNotes
-
         ]);
     }
 
@@ -242,6 +226,7 @@ class RecettesController extends AbstractController
             'budget' => $budget,
             'ingredient' => $ingredient,
             'averageNote' => $averageNote,
+            'averageNotes' => $averageNotes,
             'oneRec' => $oneRec,
             'categories' => $categories,
             'difficulte' => $difficulte,
@@ -252,35 +237,6 @@ class RecettesController extends AbstractController
             'ustensile' => $ustensile,
             'commentaire' => $form->createView(),
         ]);
-
-    
-    }
-        #[Route('add/recettes', name: 'app_recettes_new')]
-        public function new(Request $request, EntityManagerInterface $em): Response
-        {
-           
-            $recette = new Recette();
-    
-            
-            $form = $this->createForm(AddRecettesType::class, $recette);
-            $form->handleRequest($request);
-    
-            // Vérifier si le formulaire est soumis et valide
-            if ($form->isSubmitted() && $form->isValid()) {
-                // Enregistrer la recette dans la base de données
-                $em->persist($recette);
-                $em->flush();
-    
-                // Rediriger vers la liste des recettes
-                return $this->redirectToRoute('app_recettes');
-            }
-    
-            // Afficher le formulaire
-            return $this->render('recettes/add.html.twig', [
-                'form' => $form->createView(),
-            ]);
-        }
-
     }
     #[Route('/', name: 'app_accueil')]
     public function accueil(CategorieRepository $cr,CommentaireRepository $cor, IngredientRepository $ing,RecetteRepository $rr, SaisonRepository $sr, BudgetRepository $br): Response
@@ -348,5 +304,4 @@ class RecettesController extends AbstractController
             
         ]);
     }
-
 }
