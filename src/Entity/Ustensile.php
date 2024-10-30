@@ -24,6 +24,9 @@ class Ustensile
     #[ORM\ManyToMany(targetEntity: Recette::class, mappedBy: 'ustensile')]
     private Collection $recettes;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $image = null;
+
     public function __construct()
     {
         $this->recettes = new ArrayCollection();
@@ -69,6 +72,18 @@ class Ustensile
         if ($this->recettes->removeElement($recette)) {
             $recette->removeUstensile($this);
         }
+
+        return $this;
+    }
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(?string $image): static
+    {
+        $this->image = $image;
 
         return $this;
     }

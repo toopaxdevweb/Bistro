@@ -15,6 +15,7 @@ class AddUstensileType extends AbstractType
     {
         $builder
             ->add('nom')
+            ->add('image')
            
         ;
     }

@@ -39,13 +39,19 @@ class AddRecettesType extends AbstractType
             ])
             ->add('categorie', EntityType::class, [
                 'class' => Categorie::class,
-                'choice_label' => 'nom',
-                'multiple' => true,
+                'choice_label' => 'nom',  // Remplace "nom" par le champ que tu veux afficher
+                'expanded' => true,        // Affiche les options sous forme de cases à cocher
+                'multiple' => true,        // Permet de sélectionner plusieurs catégories
+                'label' => 'Catégorie',
+                'required' => false,
             ])
             ->add('ingredient', EntityType::class, [
                 'class' => Ingredient::class,
                 'choice_label' => 'nom',
-                'multiple' => true,
+                'expanded' => true,        // Affiche les options sous forme de cases à cocher
+                'multiple' => true,        // Permet de sélectionner plusieurs catégories
+                'label' => 'ingredient',
+                'required' => false,
             ])
             ->add('difficulte', EntityType::class, [
                 'class' => Difficulte::class,

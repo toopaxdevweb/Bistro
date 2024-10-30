@@ -2,6 +2,18 @@
 
 {% block title %}Bistroquet{% endblock %}
 {% block body %}
+
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+    {% endfor %}
+    {% for message in app.flashes('error') %}
+        <div class="alert alert-danger">
+            {{ message }}
+        </div>
+    {% endfor %}
+
     {% if recette == null %}
         Aucune recette existe avec cet ingredient.
         Ajouter une recette.
@@ -9,7 +21,7 @@
     <div class="container">
         <div class="d-flex gap-2">
             <h1>{{ recette.nom }}</h1>
-            <div class="favoris"><a href=""><i class="far fa-star" id="etoile"></a></i></div>
+            <div class="favoris"><a href="{{ path('ajout_favori', {'id': recette.id}) }}"><i class="far fa-star" id="etoile"></a></i></div>
         </div>
 
         <div class="">
@@ -73,7 +85,8 @@
                 <h2>Ustensiles utilisés</h2>
                 {% for ustensile in ustensiles %}
                     <tr>
-                        <td>{{ ustensile.nom }}</td><td> | </td>
+                        <td><img src="{{ ustensile.image }}" class="ustensile-image" alt="image de {{ ustensile.nom }}"></img></td>
+                        <td>{{ ustensile.nom }}</td><td> </td>
                     </tr>
                 {% endfor %}
             </section>
